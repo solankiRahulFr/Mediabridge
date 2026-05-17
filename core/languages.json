@@ -1,0 +1,12 @@
+[
+ {
+            "code": "en",
+            "name": "English",
+            "flag": "en.png"
+        },
+        {
+            "code": "fr",
+            "name": "Français",
+            "flag": "fr.png"
+        }
+]

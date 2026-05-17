@@ -1,0 +1,157 @@
+{
+  "launch": {
+    "select_mode": "Select a Mode",
+    "choose_mode": "Choose the mode that matches your setup",
+    "selected": "Selected",
+    "no_mode_selected": "No mode selected",
+    "launch_btn": "Launch",
+    "back_btn": "← Back"
+  },
+  "header": {
+    "help": "Help",
+    "about": "About"
+  },
+  "modes": {
+    "dual": {
+      "id": "dual",
+      "icon": "⊞",
+      "label": "Dual Screen",
+      "sub": "Touch + 4K Output",
+      "desc": "A touch screen for navigation and control, a second 4K screen for media output.",
+      "tags": [
+        "Touch Control",
+        "4K Output",
+        "2 Screens"
+      ]
+    },
+    "display": {
+      "id": "display",
+      "icon": "▣",
+      "label": "Display Only",
+      "sub": "Single output screen",
+      "desc": "A single screen dedicated to displaying media or a web page.",
+      "tags": [
+        "Media Loop",
+        "Web Page",
+        "Signage"
+      ]
+    },
+    "control": {
+      "id": "control",
+      "icon": "◈",
+      "label": "Control + View",
+      "sub": "Single touch screen",
+      "desc": "A touch screen for navigation and media viewing.",
+      "tags": [
+        "Zoom",
+        "Slide Control",
+        "Video Player"
+      ]
+    }
+  },
+  "nav":{
+  "display": "Display",
+  "behavior": "Behavior",
+  "header": "Header",
+  "mapping": "Field Map"
+  },
+  "config": {
+    "display": {
+      "title": "Display Settings",
+      "screen_setup": "Screen Setup",
+      "screen_setup.desc": "Configure display resolution, orientation and windowing behaviour.",
+      "fullscreen": "Fullscreen Mode",
+      "fullscreen.hint": "Launch the app covering the entire screen.",
+      "resolution": "Target Resolution",
+      "resolution.hint": "Ignored when fullscreen is on.",
+      "orientation": "Screen Orientation",
+      "monitor": "Monitor Index",
+      "monitor.hint": "Multi-display: 0 = primary screen.",
+      "colors": "Colour Overrides",
+      "colors.desc": "Override theme defaults per-deployment.",
+      "bg_color": "Background Color",
+      "text_color": "Primary Text Color",
+      "accent_color": "Accent / Highlight Color",
+      "cursor": "Cursor & Touch",
+      "hide_cursor": "Hide mouse cursor (touch-only mode)",
+      "touch_ripple": "Show touch ripple animation",
+      "dpi_scale": "DPI Scale",
+      "dpi_scale.hint": "Auto = let Qt decide based on screen DPI."
+    },
+    "behavior": {
+      "title": "Behavior Settings",
+      "startup": "Startup",
+      "startup.desc": "Control how the kiosk application launches on boot.",
+      "autostart": "Auto-start on system boot",
+      "startup_delay": "Startup Delay",
+      "startup_delay.hint": "Wait N seconds after boot before launching.",
+      "start_page": "Start Page",
+      "start_content_id": "Start Content ID",
+      "kiosk_lock": "Kiosk Mode Lock",
+      "kiosk_lock.desc": "Prevent users from accessing the OS or closing the app accidentally.",
+      "kiosk_mode": "Enable kiosk lock (blocks Alt-F4, task-switcher, etc.)",
+      "disable_rightclick": "Disable right-click context menus",
+      "disable_keyboard": "Block OS keyboard shortcuts (Win key, Alt-Tab…)",
+      "exit_gesture": "Exit / Unlock Gesture",
+      "exit_gesture.desc": "Choose how a technician can force-exit kiosk mode without a physical keyboard.",
+      "exit_method": "Exit Method",
+      "exit_taps": "Required Taps / Clicks",
+      "exit_taps.hint": "5 = easy · 7 = balanced · 10 = hard to trigger accidentally.",
+      "exit_timeout": "Tap Window",
+      "exit_timeout.hint": "All taps must occur within this time window.",
+      "exit_corner": "Corner (for corner tap)",
+      "exit_pin": "Exit PIN",
+      "idle": "Idle & Screensaver",
+      "idle_timeout": "Idle Timeout",
+      "idle_action": "Idle Action",
+      "attract_path": "Attract Loop Media"
+    },
+    "header": {
+      "title": "Header Settings",
+      "visibility": "Header Visibility",
+      "visibility.desc": "The header bar appears at the top of the kiosk UI.",
+      "show_header": "Show header bar",
+      "height": "Header Height",
+      "bg": "Header Background",
+      "text_color": "Header Text Color",
+      "title_section": "Title",
+      "show_title": "Show title in header",
+      "title_text": "Title Text",
+      "title_font_size": "Title Font Size",
+      "title_position": "Title Position",
+      "logo": "Logo",
+      "logo.desc": "Supports local file paths and remote URLs. SVG recommended for 4K.",
+      "show_logo": "Show logo in header",
+      "logo_url": "Logo URL / Path",
+      "logo_position": "Logo Position",
+      "logo_height": "Logo Max Height",
+      "logo_clickable": "Logo is the exit gesture target",
+      "extras": "Header Extras",
+      "show_clock": "Show live clock",
+      "clock_format": "Clock Format",
+      "show_lang": "Show language switcher in header",
+      "show_theme_toggle": "Show dark/light theme toggle in header"
+    },
+    "mapping": {
+      "title": "Field Mapping",
+      "desc": "Map each UI concept to the actual field name(s) in your API / data source. Enter multiple candidates separated by commas.",
+      "presets": "Quick Presets",
+      "presets.desc": "Apply a field-name convention common to popular CMS / API platforms.",
+      "reset": "Reset to defaults"
+    }
+  },
+  "action": {
+    "save": "Save Config",
+    "load": "Load JSON",
+    "close": "Close",
+    "reset": "Reset"
+  },
+  "status": {
+    "saved": "Saved → {path}",
+    "loaded": "Config loaded",
+    "error": {
+      "load": "Could not parse configuration file.",
+      "save": "Could not save configuration file."
+    }
+  }
+}

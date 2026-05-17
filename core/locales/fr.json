@@ -1,0 +1,107 @@
+{
+  "launch": {
+    "select_mode": "Sélectionnez un mode",
+    "choose_mode": "Choisissez le mode adapté à votre configuration",
+    "selected": "Sélectionné",
+    "no_mode_selected": "Aucun mode sélectionné",
+    "launch_btn": "Lancer",
+    "back_btn": "← Retour"
+  },
+  "header": {
+    "help": "Aide",
+    "about": "À propos"
+  },
+  "modes": {
+    "dual": {
+      "id": "dual",
+      "icon": "⊞",
+      "label": "Double écran",
+      "sub": "Écran tactile + 4K",
+      "desc": "Un écran tactile pour la navigation, un deuxième écran 4K pour la diffusion.",
+      "tags": [
+        "Contrôle tactile",
+        "Sortie 4K",
+        "2 écrans"
+      ]
+    },
+    "display": {
+      "id": "display",
+      "icon": "▣",
+      "label": "Affichage uniquement",
+      "sub": "Écran de sortie unique",
+      "desc": "Un seul écran dédié à l'affichage de médias ou d'une page web.",
+      "tags": [
+        "Boucle multimédia",
+        "Page Web",
+        "Signalisation"
+      ]
+    },
+    "control": {
+      "id": "control",
+      "icon": "◈",
+      "label": "Contrôle + Visualisation",
+      "sub": "Écran tactile unique",
+      "desc": "Un écran tactile pour la navigation et la visualisation des médias.",
+      "tags": [
+        "Zoom",
+        "Contrôle des diapositives",
+        "Lecteur vidéo"
+      ]
+    }
+  },
+  "nav": {
+    "display": "Affichage",
+    "behavior": "Comportement",
+    "header": "En-tête",
+    "mapping": "Champs"
+  },
+  "config": {
+    "display": {
+      "title": "Paramètres d'affichage",
+      "screen_setup": "Configuration de l'écran",
+      "screen_setup.desc": "Configurez la résolution, l'orientation et le mode fenêtré.",
+      "fullscreen": "Mode plein écran",
+      "fullscreen.hint": "Lance l'application en plein écran.",
+      "resolution": "Résolution cible",
+      "orientation": "Orientation",
+      "monitor": "Index du moniteur",
+      "colors": "Couleurs personnalisées",
+      "colors.desc": "Remplace les couleurs du thème par défaut.",
+      "bg_color": "Couleur d'arrière-plan",
+      "text_color": "Couleur du texte principal",
+      "accent_color": "Couleur d'accentuation",
+      "cursor": "Curseur & Tactile",
+      "hide_cursor": "Masquer le curseur (mode tactile uniquement)",
+      "touch_ripple": "Afficher l'animation de toucher",
+      "dpi_scale": "Échelle DPI"
+    },
+    "behavior": {
+      "title": "Paramètres de comportement",
+      "startup": "Démarrage",
+      "autostart": "Démarrage automatique au démarrage du système",
+      "startup_delay": "Délai de démarrage",
+      "kiosk_lock": "Verrouillage kiosque",
+      "exit_gesture": "Geste de sortie / déverrouillage",
+      "exit_method": "Méthode de sortie",
+      "exit_taps": "Appuis requis",
+      "idle": "Inactivité & Économiseur d'écran"
+    },
+    "mapping": {
+      "title": "Correspondance des champs",
+      "desc": "Associez chaque concept UI aux noms de champs réels de votre API.",
+      "presets": "Préréglages rapides"
+    }
+  },
+  "action": {
+    "save": "Enregistrer",
+    "load": "Charger JSON",
+    "close": "Fermer",
+    "reset": "Réinitialiser"
+  },
+  "status": {
+    "saved": "Enregistré → {path}",
+    "loaded": "Configuration chargée",
+    "error.load": "Impossible de lire le fichier de configuration.",
+    "error.save": "Impossible d'enregistrer le fichier de configuration."
+  }
+}

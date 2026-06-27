@@ -10,7 +10,7 @@ A professional multi-screen kiosk platform for presentations, digital signage, a
 
 | Version | Date       | Notes                  | Download |
 |---------|------------|------------------------|----------|
-| 1.0.0   | 2026-05-29 | Initial release (all modes not complete)      |[Download MediaBridge v1.0.0](./my-folder.zip)|
+| 1.0.0   | 2026-05-29 | Initial release (all modes not complete)      |[Download MediaBridge v1.0.0](https://github.com/solankiRahulFr/Mediabridge/releases/tag/v1.0.0)|
 
 ---
 

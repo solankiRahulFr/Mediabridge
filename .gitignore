@@ -3,4 +3,5 @@ MediaBridge.spec
 main.spec
 .venv/
 *.spec
+*.zip
 MediaBridge.zip

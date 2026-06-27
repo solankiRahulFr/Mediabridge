@@ -1,0 +1,39 @@
+/* ── Header ────────────────────────────────────────────────────────────────── */
+QWidget#Header {{
+    background-color: {bg2};
+    border-bottom: 1px solid {border};
+}}
+QLabel#HeaderTitle {{
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}}
+QLabel#LogoImage {{
+    background: transparent;
+}}
+
+/* ── Back / ghost buttons ─────────────────────────────────────────────────── */
+QPushButton#GhostBtn {{
+    background: transparent;
+    color: {text2};
+    border: 1.5px solid {border};
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 500;
+}}
+QPushButton#GhostBtn:hover {{
+    color: {text};
+    border-color: {accent};
+}}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+QFrame#ConfigFooter {{
+    background-color: {bg};
+    border-top: 1px solid {border};
+}}
+QLabel#StatusLabel {{
+    color: {success};
+    font-size: 12px;
+    background-color: {bg};
+}}

@@ -1,11 +1,3 @@
-"""
-Compact animated theme toggle for the launcher header bar.
-
-This is visually distinct from the config-window's ThemeToggle
-(``ui/themes/theme.py``):  smaller (56×28), different icon set (☽ / ☀),
-shadow on knob.  Both read colour tokens from the central ThemeManager.
-"""
-
 from PySide6.QtCore import (
     Property as QtProperty, QEasingCurve,
     QPropertyAnimation, QRect, Qt, Signal,
@@ -79,3 +71,9 @@ class ThemeToggle(QWidget):
         p.drawEllipse(int(self.__knob_x) + 1, 5, 20, 20)
         p.setBrush(QColor("#FFFFFF"))
         p.drawEllipse(int(self.__knob_x), 4, 20, 20)
+
+    def set_state(self, is_dark: bool) -> None:
+        """Set toggle position without emitting toggled signal."""
+        self._dark = is_dark
+        self.__knob_x = 32.0 if is_dark else 4.0
+        self.update()

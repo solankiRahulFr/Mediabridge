@@ -1,0 +1,78 @@
+QLineEdit, QTextEdit, QSpinBox, QComboBox, QListWidget, QDoubleSpinBox {{
+    background-color: {surface2};
+    color: {text};
+    border: 1px solid {border};
+    border-radius: 7px;
+    padding: 6px 10px;
+    min-height: 24px;
+    selection-background-color: {accent};
+}}
+QLineEdit:focus, QTextEdit:focus, QSpinBox:focus, QComboBox:focus, QListWidget:focus, QDoubleSpinBox:focus {{
+    border-color: {accent};
+    background-color: {surface};
+}}
+
+QComboBox QAbstractItemView {{
+    background-color: {surface};
+    border: 1px solid {border};
+    selection-background-color: {accent};
+    color: {text};
+    border-radius: 7px;
+}}
+
+QComboBox::drop-down {{
+    border: none;
+    width: 18px;
+    background: transparent;
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+}}
+QComboBox::down-arrow {{
+    image: url("./ui/assets/images/arrow-down.png");
+    width: 10px;
+    height: 10px;
+}}
+QComboBox::down-arrow:on {{
+    top: 1px;
+    left: 1px;
+}}
+
+QSpinBox::up-button, QDoubleSpinBox::up-button {{
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 18px;
+    border: none;
+    background: transparent;
+}}
+QSpinBox::down-button, QDoubleSpinBox::down-button {{
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 18px;
+    border: none;
+    background: transparent;
+}}
+QSpinBox::up-arrow, QDoubleSpinBox::up-arrow {{
+    image: url("./ui/assets/images/arrow-up.png");
+    width: 8px;
+    height: 8px;
+}}
+QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {{
+    image: url("./ui/assets/images/arrow-down.png");
+    width: 8px;
+    height: 8px;
+}}
+
+QCheckBox {{
+    color: {text};
+    spacing: 10px;
+}}
+QCheckBox::indicator {{
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    border: 2px solid {border};
+    background-color: {surface2};
+}}
+QCheckBox::indicator:checked {{
+    background-color: {accent};
+    border-color: {accent};
+}}

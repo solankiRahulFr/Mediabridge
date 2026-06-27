@@ -1,11 +1,6 @@
 """
-core/theme.py
-─────────────────────────────────────────────────────────────────────────────
-Re‑export convenience — lets any module write::
-
-    from core.theme import ThemeManager, ThemeToggle, THEMES, apply_theme
-
-The canonical implementation lives in ``ui/themes/theme.py``.
+Re‑export convenience symbols from the UI theme system.
+This allows the core to use the theme system without importing from the UI package ui/themes/theme.py.
 """
 
-from ui.themes.theme import THEMES, ThemeManager, ThemeToggle, apply_theme  # noqa: F401
+from ui.themes.theme import THEMES, ThemeManager, apply_theme  # noqa: F401

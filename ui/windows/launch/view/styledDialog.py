@@ -1,8 +1,3 @@
-"""
-Themed modal dialog used by the launcher for Help / About.
-Reads colour tokens from the central ThemeManager.
-"""
-
 from PySide6.QtWidgets import (
     QDialog, QFrame, QHBoxLayout, QLabel, QPushButton, QVBoxLayout,
 )
@@ -31,8 +26,7 @@ class StyledDialog(QDialog):
     def _build(self, title, content_html, theme_name):
         t = self._get_colors(theme_name)
         self.setStyleSheet(
-            f"QDialog {{ background: {t['bg2']}; border: 1.5px solid {t['border']}; "
-            f"border-radius: 16px; }}"
+            f"QDialog {{ background: {t['bg2']};}}"
         )
         lay = QVBoxLayout(self)
         lay.setContentsMargins(32, 28, 32, 28)

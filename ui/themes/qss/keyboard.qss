@@ -1,0 +1,93 @@
+QWidget#VKBBackdrop {{
+    background: rgba(0, 0, 0, 120);
+}}
+QLabel#VKBLabel {{
+    color: {text2};
+    font-size: 13px;
+}}
+QLineEdit#VKBInput {{
+    background: {surface};
+    color: {text};
+    border: 1px solid {border};
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 16px;
+}}
+QFrame#VirtualKeyboard {{
+    background: {bg};
+    border-top: 1px solid {border};
+}}
+QPushButton#KBKey {{
+    background: {surface2};
+    color: {text};
+    border: 1px solid {border};
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 2px 4px;
+}}
+QPushButton#KBKey:hover {{
+    background: {key_hover};
+    border-color: {accent};
+}}
+QPushButton#KBKey:pressed {{
+    background: {key_press};
+    color: #FFFFFF;
+}}
+QPushButton#KBSpecial {{
+    background: {surface};
+    color: {text2};
+    border: 1px solid {border};
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 2px 4px;
+}}
+QPushButton#KBSpecial:hover {{
+    border-color: {accent};
+    color: {text};
+}}
+QPushButton#KBSpecial:pressed {{
+    background: {accent};
+    color: #FFFFFF;
+}}
+QFrame#AccentPanel {{
+    background: {bg};
+    border: 1px solid {border};
+    border-radius: 10px;
+}}
+QPushButton#KBAccentBtn {{
+    background: {accent};
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 700;
+}}
+QPushButton#KBAccentBtn:hover {{
+    background: {accent2};
+}}
+QPushButton#KBCloseBtn {{
+    background: transparent;
+    color: {danger};
+    border: 1px solid {danger};
+    border-radius: 6px;
+}}
+QPushButton#KBCloseBtn:pressed {{
+    background: {danger};
+    color: #FFFFFF;
+}}
+QPushButton#KBAcceptBtn {{
+    background: {accent};
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 700;
+}}
+QPushButton#KBAcceptBtn:hover {{
+    background: {accent2};
+}}
+QPushButton#KBAcceptBtn:pressed {{
+    background: {accent};
+    opacity: 0.8;
+}}

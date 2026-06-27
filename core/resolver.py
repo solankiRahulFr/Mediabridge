@@ -1,47 +1,3 @@
-"""
-Runtime Field Resolver — pure Python, zero Qt dependency.
-
-Maps UI semantic keys → backend record values using the mapping section of
-the saved kiosk config.  Supports dot-notation paths, list indexing, multi-
-candidate priority resolution, and convenience helpers for images / authors.
-
-Architecture
-────────────
-The MappingPanel (UI) lets the user configure which backend field names
-correspond to which UI concepts.  That mapping is persisted as JSON via
-ConfigIO.  At runtime, FieldResolver reads that mapping and resolves each
-semantic key against an actual data record from the customer's API.
-
-Mapping config format (as produced by the MappingPanel)::
-
-    {
-        "title":         {"enabled": true,  "candidates": ["title", "name"]},
-        "primary_image": {"enabled": true,  "candidates": ["thumbnail", "cover"]},
-        ...
-    }
-
-Usage
-─────
-    from core.resolver import FieldResolver
-    from core.configio import ConfigIO
-
-    cfg      = ConfigIO.load("kiosk_config.json")
-    resolver = FieldResolver(cfg["mapping"])
-
-    record = {
-        "id": "abc-123",
-        "title": "Annual Conference Keynote",
-        "thumbnail": "https://cdn.example.com/thumb.jpg",
-        "author": {"name": "Alice Martin"},
-        "tags": ["keynote", "AI", "design"],
-    }
-
-    title   = resolver.get(record, "title")       # "Annual Conference Keynote"
-    authors = resolver.authors(record)             # ["Alice Martin"]
-    image   = resolver.image_url(record)           # "https://cdn.example.com/thumb.jpg"
-    bound   = resolver.bind_all(record)            # {semantic_key: value, …}
-"""
-
 from __future__ import annotations
 
 import re
@@ -49,10 +5,6 @@ from typing import Any
 
 
 class FieldResolver:
-    """
-    Resolves semantic keys to backend values using the persisted mapping config.
-    """
-
     def __init__(self, mapping_cfg: dict[str, dict]) -> None:
         self._cfg = mapping_cfg or {}
 
@@ -60,15 +12,6 @@ class FieldResolver:
 
     def get(self, record: dict[str, Any], semantic_key: str,
             fallback: Any = None) -> Any:
-        """
-        Return the first non-null, non-empty candidate value for *semantic_key*
-        found inside *record*.
-
-        Supports:
-        • Dot-notation  →  ``"author.avatar.url"``
-        • List indexing →  ``"items.0.title"``
-        • Multiple candidates tried in priority order
-        """
         entry = self._cfg.get(semantic_key)
         if not entry or not entry.get("enabled", True):
             return fallback
@@ -81,10 +24,6 @@ class FieldResolver:
         return fallback
 
     def bind_all(self, record: dict[str, Any]) -> dict[str, Any]:
-        """
-        Resolve all enabled semantic keys against *record*.
-        Returns ``{semantic_key: resolved_value}`` — only keys with a hit.
-        """
         result: dict[str, Any] = {}
         for key, entry in self._cfg.items():
             if not entry.get("enabled", True):
@@ -98,7 +37,6 @@ class FieldResolver:
 
     def image_url(self, record: dict[str, Any],
                   base_url: str = "") -> str | None:
-        """Resolve *primary_image*; handles Strapi-style ``{"url": "…"}``."""
         raw = self.get(record, "primary_image")
         if raw is None:
             return None
@@ -112,12 +50,10 @@ class FieldResolver:
         return raw
 
     def authors(self, record: dict[str, Any]) -> list[str]:
-        """Flat list of author name strings, regardless of backend schema."""
         raw = self.get(record, "authors")
         return self._flatten_authors(raw)
 
     def tags(self, record: dict[str, Any]) -> list[str]:
-        """Return tags as a flat list of strings."""
         raw = self.get(record, "tags")
         if raw is None:
             return []
@@ -144,7 +80,6 @@ class FieldResolver:
 
     @staticmethod
     def _deep_get(obj: Any, path: str) -> Any:
-        """Walk a dot-notation *path* through nested dicts/lists."""
         parts = path.split(".")
         current = obj
         for part in parts:

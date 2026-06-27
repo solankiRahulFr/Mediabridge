@@ -1,0 +1,118 @@
+/* ── Section / card ───────────────────────────────────────────────────────── */
+QFrame#Card {{
+    background-color: {bg2};
+    border: 1px solid {border};
+    border-radius: 10px;
+}}
+QFrame#Card:hover {{
+    border-color: {accent};
+}}
+QLabel#SectionTitle {{
+    font-size: 15px;
+    font-weight: 700;
+    color: {text};
+    padding-bottom: 4px;
+}}
+QLabel#SectionDesc {{
+    font-size: 12px;
+    color: {text3};
+}}
+QLabel#FieldLabel {{
+    font-size: 12px;
+    font-weight: 600;
+    color: {text2};
+}}
+QLabel#HintLabel {{
+    font-size: 11px;
+    color: {text3};
+    font-style: italic;
+}}
+
+/* ── Nav rail ─────────────────────────────────────────────────────────────── */
+QFrame#NavRail {{
+    background-color: {bg};
+    border-right: 1px solid {border};
+}}
+QPushButton#NavBtn {{
+    background: transparent;
+    color: {text2};
+    border: none;
+    border-radius: 8px;
+    text-align: left;
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 28px;
+}}
+QPushButton#NavBtn:hover {{
+    background-color: {surface};
+    color: {text};
+}}
+QPushButton#NavBtn:checked {{
+    background-color: {accent};
+    color: #FFFFFF;
+    font-weight: 700;
+}}
+
+/* ── Nav Tabs ─────────────────────────────────────────────────────────────── */
+QWidget#NavTabs {{
+    background-color: {bg2};
+    border-bottom: 1px solid {border};
+}}
+QPushButton#NavTabButton {{
+    color: {text2};
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    min-height: 38px;
+}}
+QPushButton#NavTabButton:hover {{
+    color: {text};
+    border-bottom: 2px solid {surface};
+}}
+QPushButton#NavTabButton:checked {{
+    background-color: {accent};
+    color: white;
+    font-weight: 700;
+    border-bottom: 2px solid {accent};
+}}
+QPushButton#NavTabButton:pressed {{
+    color: {accent2};
+}}
+
+/* ── Mapping rows ─────────────────────────────────────────────────────────── */
+QFrame#MappingRow {{
+    background-color: {bg2};
+    border: 1px solid {border};
+    border-radius: 8px;
+}}
+QFrame#MappingRow:hover {{
+    border-color: {accent};
+}}
+QLabel#SemanticKey {{
+    font-weight: 700;
+    color: {accent};
+    font-size: 12px;
+    font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+}}
+QLabel#SemanticCategory {{
+    font-size: 10px;
+    color: {text3};
+    font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+}}
+
+/* ── Collapsible group header ─────────────────────────────────────────────── */
+QPushButton#GroupHeader {{
+    background-color: {surface2};
+    color: {text2};
+    border: none;
+    border-radius: 6px;
+    text-align: left;
+    padding: 0 12px;
+    font-weight: 700;
+    font-size: 12px;
+}}
+QPushButton#GroupHeader:hover {{ color: {accent}; }}

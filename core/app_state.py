@@ -1,45 +1,4 @@
-"""
-Centralised application state — **single source of truth** shared across
-every window, panel, widget, and worker in the project.
-
-Design goals
-────────────
-• Pure-Python singleton — no QObject, no Qt signals.  This keeps AppState
-  importable in non-Qt contexts (CLI scripts, unit tests, background threads).
-• Holds references to the two shared managers:
-      .theme   →  ThemeManager   (colour palette + QSS application)
-      .lang    →  LanguageManager (i18n translations + language switching)
-• Lightweight observer pattern for reactive updates:
-      state.subscribe("is_dark", my_callback)
-      state.set("is_dark", False)  # fires my_callback(False)
-
-Quick-start
-───────────
-    from core.app_state import get_state
-
-    state = get_state()
-
-    # Theme
-    state.theme.apply(some_widget)        # apply current QSS
-    state.theme.set_dark(False)           # switch palette
-
-    # Language
-    state.lang.set_language("fr")         # loads fr.json, notifies observers
-    label = state.t("launch.select_mode") # → "Sélectionnez un mode"
-
-    # Kiosk config
-    state.kiosk_config                    # full config dict
-    state.section("display")              # one section dict
-
-Integration checklist (new widget)
-──────────────────────────────────
-1.  ``from core.app_state import get_state``
-2.  In ``__init__``: ``self._state = get_state()``
-3.  Apply theme:  ``self._state.theme.apply(self)``
-4.  Subscribe to language changes:
-        ``self._state.lang.on_change(self._retranslate)``
-5.  Implement ``_retranslate(self, lang_code)`` to update labels.
-"""
+"""Centralised application state — singleton shared across all windows, panels, and widgets."""
 
 from __future__ import annotations
 from .language_manager import LanguageManager
@@ -74,14 +33,16 @@ class AppState:
 
     def __init__(self) -> None:
         # Managers — assigned once during bootstrap (main.py)
-        self.theme: ThemeManager | None = None        # will be ThemeManager
-        self.lang: LanguageManager | None = None         # will be LanguageManager
+        self.theme: ThemeManager | None = None          # will be ThemeManager
+        self.theme_manager: ThemeManager | None = None  # legacy alias used by dual mode -------------------------------
+        self.lang: LanguageManager | None = None        # will be LanguageManager
 
         # Convenience flags
         self.is_dark: bool = True
         self.language: str = "en"
         self.kiosk_mode: str = "dual"
         self.kiosk_config: dict[str, Any] = {}
+        self.selected_mode: str | None = None 
 
         # Observer registry  {key: [callback, …]}
         self._observers: dict[str, list[Callable]] = {}
@@ -114,8 +75,8 @@ class AppState:
         """
         Shorthand for ``state.lang.t(key)``.
 
-        Returns the translated value (string, list, or dict) for *key* in the
-        current language, falling back to English, then the raw key string.
+        Returns the translated value for *key* in the current language,
+        falling back to English, then the raw key string.
         """
         if self.lang is None:
             return key
@@ -132,17 +93,15 @@ class AppState:
     def section(self, name: str) -> dict[str, Any]:
         """Return a config section dict, empty dict if not present."""
         return self.kiosk_config.get(name, {})
+    
+    def set_mode(self, mode: str) -> None:
+        """Set the current kiosk mode and notify 'selected_mode'."""
+        print("""Setting mode to: %s""" % mode)
+        self.set("selected_mode", mode)
 
 
 # ── Module-level convenience ──────────────────────────────────────────────────
 
 def get_state() -> AppState:
-    """
-    Return the global AppState singleton.
-
-    This is the **recommended** way to access state throughout the codebase::
-
-        from core.app_state import get_state
-        state = get_state()
-    """
+    """Return the global AppState singleton."""
     return AppState.instance()

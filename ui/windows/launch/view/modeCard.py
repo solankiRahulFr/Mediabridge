@@ -1,10 +1,5 @@
-"""
-Mode selection card shown on the launcher screen.
-Reads colour tokens from the central ThemeManager and translations from
-the central LanguageManager via ``get_state()``.
-"""
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QFont, QCursor
 
@@ -23,6 +18,7 @@ class ModeCard(QWidget):
         self._hovered = False
         self.setCursor(QCursor(Qt.PointingHandCursor))
         self.setMinimumHeight(200)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self._state = get_state()
         self.setAttribute(Qt.WA_StyledBackground, True)
         self._build()
@@ -42,6 +38,8 @@ class ModeCard(QWidget):
         self.icon_lbl = QLabel(self.mode["icon"])
         font_icon = QFont(); font_icon.setPointSize(28)
         self.icon_lbl.setFont(font_icon)
+        self.icon_lbl.setFixedSize(56, 56)
+        self.icon_lbl.setAlignment(Qt.AlignCenter)
         icon_row.addWidget(self.icon_lbl)
         icon_row.addStretch()
 
@@ -75,7 +73,7 @@ class ModeCard(QWidget):
         self.tag_widgets = []
         tags = self._state.t(f"modes.{self.mode['id']}.tags")
         tag_count = len(tags) if isinstance(tags, list) else 3
-        for _ in range(tag_count):
+        for i in range(tag_count):
             t = QLabel()
             tf = QFont(); tf.setPointSize(8)
             t.setFont(tf)
@@ -107,10 +105,10 @@ class ModeCard(QWidget):
             bg = t["surface"]
             border_color = t["border"]
 
-        self.icon_lbl.setStyleSheet(f"color: {t['accent']};background: transparent;")
-        self.title_lbl.setStyleSheet(f"color: {t['text']};background: transparent;")
-        self.sub_lbl.setStyleSheet(f"color: {t['accent2']};background: transparent;")
-        self.desc_lbl.setStyleSheet(f"color: {t['text2']};background: transparent;")
+        self.icon_lbl.setStyleSheet(f"color: {t['accent']};background: transparent; font-size: 28pt;")
+        self.title_lbl.setStyleSheet(f"color: {t['text']};background: transparent; font-size: 15pt; font-weight: 600;")
+        self.sub_lbl.setStyleSheet(f"color: {t['accent2']};background: transparent; font-size: 9pt;")
+        self.desc_lbl.setStyleSheet(f"color: {t['text2']};background: transparent; font-size: 9pt;")
         self.badge.setStyleSheet(
             f"color: {t['accent2']}; background: {t['accent_glow']}; "
             f"border-radius: 4px; padding: 2px 8px;"
@@ -142,7 +140,11 @@ class ModeCard(QWidget):
         self.title_lbl.setText(self._state.t(f"modes.{self.mode['id']}.label"))
         self.sub_lbl.setText(self._state.t(f"modes.{self.mode['id']}.sub"))
         self.desc_lbl.setText(self._state.t(f"modes.{self.mode['id']}.desc"))
+
         tags = self._state.t(f"modes.{self.mode['id']}.tags")
-        tag_count = len(tags) if isinstance(tags, list) else 3
-        for i in range(tag_count):
-            self.tag_widgets[i].setText(self._state.t(f"modes.{self.mode['id']}.tags.{i}"))
+        if isinstance(tags, list):
+            for i, widget in enumerate(self.tag_widgets):
+                widget.setText(tags[i] if i < len(tags) else "")
+        else:
+            for i, widget in enumerate(self.tag_widgets):
+                widget.setText(self._state.t(f"modes.{self.mode['id']}.tags.{i}"))

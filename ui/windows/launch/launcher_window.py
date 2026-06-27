@@ -1,10 +1,4 @@
-"""
-Launcher / mode-selection screen — the first thing the user sees.
 
-All colour tokens come from ``get_state().theme`` (central ThemeManager).
-All translations come from ``get_state().lang`` (central LanguageManager).
-No direct JSON file reads.
-"""
 
 import json
 import pathlib
@@ -14,14 +8,13 @@ from PySide6.QtWidgets import (
     QLabel, QPushButton,
 )
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFont, QCursor, QPixmap
+from PySide6.QtGui import QFont, QCursor
 
 from core.app_state import get_state
 from ui.themes.theme import THEMES, ThemeManager
 from ui.windows.launch.view.modeCard import ModeCard
-from ui.widgets.togglebutton import ThemeToggle
+from ui.widgets.header import Header
 from ui.windows.launch.view.styledDialog import StyledDialog
-from ui.widgets.language_switcher import LanguageSwitcher
 
 # Load modes list (static data — fine to read once at import)
 _MODES_FILE = pathlib.Path(__file__).resolve().parent.parent.parent.parent / "core" / "modes.json"
@@ -30,13 +23,14 @@ with open(_MODES_FILE, "r", encoding="utf-8") as _f:
 
 
 class MediaBridgeLauncher(QWidget):
-    launch_requested = Signal()
+    launch_requested = Signal(str)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, main_window:None=None):
         super().__init__()
         self.theme_name = "dark"
         self.selected_mode = None
         self._state = get_state()
+        self._main_window = main_window
         self._build_ui()
         self.apply_theme()
 
@@ -51,58 +45,14 @@ class MediaBridgeLauncher(QWidget):
         root_lay.setContentsMargins(0, 0, 0, 0)
         root_lay.setSpacing(0)
 
-        # ── Header bar ──────────────────
-        self.header = QWidget()
-        self.header.setFixedHeight(64)
-        hdr_lay = QHBoxLayout(self.header)
-        hdr_lay.setContentsMargins(32, 0, 32, 0)
-
-        # logo / wordmark
-        pixmap = QPixmap('ui/assets/images/mediabridge.png')
-        scaled_pixmap = pixmap.scaled(
-            48, 48,
-            Qt.KeepAspectRatio,
-            Qt.SmoothTransformation,
+        # ── Header bar (shared widget) ──────────────────
+        self._header = Header(
+            show_back=False,
+            show_kb_toggle=True,
+            extra_buttons=[("Help", self._show_help), ("About", self._show_about)], main_window=self._main_window
         )
-        logo_image = QLabel()
-        logo_image.setPixmap(scaled_pixmap)
-        # logo_lbl = QLabel("MediaBridge")
-        logo_font = QFont(); logo_font.setPointSize(13); logo_font.setWeight(QFont.Bold)
-        logo_font.setLetterSpacing(QFont.AbsoluteSpacing, 2)
-        # logo_lbl.setFont(logo_font)
-        # self.logo_lbl = logo_lbl
-        hdr_lay.addWidget(logo_image)
-        # hdr_lay.addWidget(logo_lbl)
-        hdr_lay.addStretch()
-
-        # Language dropdown
-        self.lang_select = LanguageSwitcher(is_dark=True)
-        hdr_lay.addWidget(self.lang_select)
-        hdr_lay.addSpacing(20)
-
-        # theme toggle
-        self.theme_toggle = ThemeToggle(is_dark=True)
-        self.theme_toggle.toggled.connect(self._on_theme_toggle)
-        hdr_lay.addWidget(self.theme_toggle)
-        hdr_lay.addSpacing(20)
-
-        # Help / About
-        for label, slot in [("Help", self._show_help), ("About", self._show_about)]:
-            btn = QPushButton(label)
-            btn.setFixedHeight(34)
-            btn.setFixedWidth(72)
-            btn.setCursor(QCursor(Qt.PointingHandCursor))
-            bf = QFont(); bf.setPointSize(9); bf.setWeight(QFont.Medium)
-            btn.setFont(bf)
-            btn.clicked.connect(slot)
-            hdr_lay.addWidget(btn)
-            hdr_lay.addSpacing(8)
-            if label == "Help":
-                self.help_btn = btn
-            else:
-                self.about_btn = btn
-
-        root_lay.addWidget(self.header)
+        self._header.theme_toggle.toggled.connect(self._on_theme_toggle)
+        root_lay.addWidget(self._header)
 
         # ── Body ─────────────────────────
         self.body = QWidget()
@@ -147,7 +97,7 @@ class MediaBridgeLauncher(QWidget):
         bottom_bar.addWidget(self.status_lbl)
         bottom_bar.addStretch()
 
-        self.start_btn = QPushButton("  Launch  →")
+        self.start_btn = QPushButton("Launch")
         start_font = QFont(); start_font.setPointSize(12); start_font.setWeight(QFont.DemiBold)
         self.start_btn.setFont(start_font)
         self.start_btn.setFixedHeight(48)
@@ -164,6 +114,21 @@ class MediaBridgeLauncher(QWidget):
         # Subscribe to language changes
         self._state.lang.on_change(lambda _code: self.retranslate_ui())
 
+    def showEvent(self, event):
+        """Sync theme and keyboard state when the page becomes visible again."""
+        super().showEvent(event)
+        self._header.sync_kb_state()
+        if self._state.theme:
+            is_dark = self._state.theme.is_dark
+            new_theme = "dark" if is_dark else "light"
+            if new_theme != self.theme_name:
+                self.theme_name = new_theme
+                for card in self.cards.values():
+                    card.theme_name = self.theme_name
+                    card.apply_theme()
+                self.apply_theme()
+        self._header.sync_theme()
+
     # ── Theme ──────────────────────────────────
     def _on_theme_toggle(self, is_dark: bool):
         self.theme_name = "dark" if is_dark else "light"
@@ -178,32 +143,15 @@ class MediaBridgeLauncher(QWidget):
         for card in self.cards.values():
             card.theme_name = self.theme_name
             card.apply_theme()
-        self.lang_select.set_theme(is_dark)
         self.apply_theme()
 
     def apply_theme(self):
         t = self._get_colors()
 
-        self.setStyleSheet(f"QMainWindow {{ background: {t['bg']}; }}")
-
-        # header
-        self.header.setStyleSheet(
-            f"background: {t['bg2']}; border-bottom: 1px solid {t['border']};"
-        )
-        # self.logo_lbl.setStyleSheet(f"color: {t['accent']};")
-
         # hero
         self.hero_lbl.setStyleSheet(f"color: {t['text']};")
         self.sub_lbl.setStyleSheet(f"color: {t['text2']};")
 
-        # help / about
-        ghost_style = (
-            f"QPushButton {{ background: transparent; color: {t['text2']}; "
-            f"border: 1.5px solid {t['border']}; border-radius: 8px; }}"
-            f"QPushButton:hover {{ color: {t['text']}; border-color: {t['accent']}; }}"
-        )
-        self.help_btn.setStyleSheet(ghost_style)
-        self.about_btn.setStyleSheet(ghost_style)
 
         # status
         self.status_lbl.setStyleSheet(f"color: {t['text3']}; font-size: 10pt;")
@@ -227,17 +175,19 @@ class MediaBridgeLauncher(QWidget):
     # ── Slots ──────────────────────────────────
     def _on_mode_selected(self, mode_id: str):
         self.selected_mode = mode_id
+        self._state.set_mode(mode_id)
         for mid, card in self.cards.items():
             card.set_selected(mid == mode_id)
         label = self._state.t(f"modes.{mode_id}.label")
-        self.status_lbl.setText(f"{self._state.t('launch.mode_prefix')} {label}")
+        statusLbl = self._state.t('launch.mode_prefix') + " " + label
+        self.status_lbl.setText(statusLbl)
         self.start_btn.setEnabled(True)
         self.apply_theme()
 
     def _on_launch(self):
         if not self.selected_mode:
             return
-        self.launch_requested.emit()
+        self.launch_requested.emit(self.selected_mode)
 
     def _show_help(self):
         dlg = StyledDialog(
@@ -277,7 +227,8 @@ class MediaBridgeLauncher(QWidget):
     def retranslate_ui(self):
         self.hero_lbl.setText(self._state.t("launch.select_mode"))
         self.sub_lbl.setText(self._state.t("launch.choose_mode"))
-        self.help_btn.setText(self._state.t("header.help"))
-        self.about_btn.setText(self._state.t("header.about"))
         self.status_lbl.setText(self._state.t("launch.no_mode_selected"))
         self.start_btn.setText(self._state.t("launch.launch_btn"))
+        label = self._state.t(f"modes.{self._state.selected_mode}.label")
+        statusLbl = self._state.t('launch.mode_prefix') + " " + label
+        self.status_lbl.setText(statusLbl)

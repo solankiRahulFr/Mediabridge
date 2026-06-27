@@ -1,0 +1,62 @@
+QPushButton#PrimaryBtn {{
+    background-color: {accent};
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 22px;
+    font-weight: 700;
+    font-size: 13px;
+    min-height: 24px;
+}}
+QPushButton#PrimaryBtn:hover  {{ background-color: {accent2}; }}
+
+QPushButton#SecondaryBtn {{
+    background-color: {surface2};
+    color: {text};
+    border: 1px solid {border};
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: 600;
+    font-size: 13px;
+    min-height: 24px;
+}}
+QPushButton#SecondaryBtn:hover {{ border-color: {accent}; color: {accent}; }}
+
+QPushButton#CloseBtn {{
+    background-color: transparent;
+    color: {text2};
+    border: none;
+    border-radius: 18px;
+    font-size: 15px;
+}}
+QPushButton#CloseBtn:hover {{ background-color: {danger}; color: #FFFFFF; }}
+
+QPushButton#SmallBtnImp {{
+    background-color: {accent};
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 14px;
+}}
+QPushButton#SmallBtnImp:hover  {{ background-color: {accent2}; }}
+
+QPushButton#SmallBtn {{
+    background-color: {surface2};
+    color: {text2};
+    border: 1px solid {border};
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 14px;
+}}
+QPushButton#SmallBtn:hover {{ color: {accent}; border-color: {accent}; }}
+
+QPushButton#DangerBtn {{
+    background-color: transparent;
+    color: {danger};
+    border: 1px solid {danger};
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 14px;
+}}
+QPushButton#DangerBtn:hover {{ background-color: {danger}; color: #FFFFFF; }}

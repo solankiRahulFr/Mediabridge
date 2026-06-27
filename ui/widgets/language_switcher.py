@@ -1,23 +1,3 @@
-"""
-Drop-in language selector combo box.
-
-Uses the central ``LanguageManager`` (via ``get_state().lang``) for both
-reading available languages and switching the active locale.  Uses the
-central ``ThemeManager`` (via ``get_state().theme``) for colour tokens —
-**no direct JSON file reads**.
-
-Usage::
-
-    from ui.widgets.language_switcher import LanguageSwitcher
-
-    switcher = LanguageSwitcher()
-    header_layout.addWidget(switcher)
-
-    # React to theme changes:
-    switcher.set_theme(is_dark=False)
-"""
-
-import os
 import pathlib
 
 from PySide6.QtCore import Qt
@@ -46,7 +26,7 @@ class LanguageSwitcher(QComboBox):
         self.setCursor(QCursor(Qt.PointingHandCursor))
         self.setFocusPolicy(Qt.StrongFocus)
 
-        # Forces Qt popup instead of native OS popup
+  
         # This removes the white top/bottom background issue
         self.setStyleSheet(
             """
@@ -80,7 +60,7 @@ class LanguageSwitcher(QComboBox):
         languages = self._state.lang.available()
         for lang in languages:
             flag_path = str(_BASE_PATH / "ui" / "assets" / "images" / "flags" / lang["flag"])
-            flag = QIcon(flag_path)
+            flag = QIcon(flag_path).pixmap(16, 16)
             self.addItem(flag, lang["name"], userData=lang["code"])
 
         current_code = self._state.lang.current
@@ -91,24 +71,17 @@ class LanguageSwitcher(QComboBox):
 
         # Apply theme
         self.apply_theme()
-    
     def hidePopup(self):
         super().hidePopup()
 
-    # ══════════════════════════════════════════
     # Functionality
-    # ══════════════════════════════════════════
     def _on_language_changed(self, index):
         lang_code = self.itemData(index)
         if lang_code and self._state.lang:
             self._state.lang.set_language(lang_code)
 
-    # ══════════════════════════════════════════
     # Theme — reads tokens from central ThemeManager
-    # ══════════════════════════════════════════
-
     def _get_colors(self) -> dict[str, str]:
-        """Get colour tokens from the central ThemeManager."""
         if self._state.theme:
             return self._state.theme.colors
         # Fallback to THEMES dict directly if manager not yet initialised
@@ -226,9 +199,7 @@ class LanguageSwitcher(QComboBox):
         }}
         """)
 
-    # ══════════════════════════════════════════
     # Change Theme
-    # ══════════════════════════════════════════
 
     def set_theme(self, is_dark):
         self._dark = is_dark
@@ -238,16 +209,9 @@ class LanguageSwitcher(QComboBox):
         t = self._get_colors()
         super().showPopup()
         view = self.view()
-        # if self.view():
-        #     view.setWindowFlags(
-        #         Qt.Popup
-        #         | Qt.FramelessWindowHint
-        #     )
-            # view.setAttribute(Qt.WA_TranslucentBackground, False)
 
-        popup = self.view().window()
-        popup.setContentsMargins(0, 0, 0, 0)
-        popup.setStyleSheet(f"""
+        view.setContentsMargins(0, 0, 0, 0)
+        view.setStyleSheet(f"""
         background: {t['surface']};
         border: none;
         """)

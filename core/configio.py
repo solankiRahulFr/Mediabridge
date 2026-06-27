@@ -1,15 +1,5 @@
 """
 JSON persistence for the kiosk configuration.
-Zero Qt dependency — safe to use from workers, CLI scripts, or tests.
-
-Typical usage (from a Qt widget)
-─────────────────────────────────
-    from core.configio import ConfigIO
-    from PySide6.QtWidgets import QFileDialog
-
-    path, _ = QFileDialog.getSaveFileName(self, "Save config", "config.json",
-                                          "JSON (*.json)")
-    ok = ConfigIO.save(path, my_config_dict)
 """
 
 from __future__ import annotations
@@ -29,16 +19,10 @@ _META_KEYS = {"_version", "_saved_at"}
 
 
 class ConfigIO:
-    """Static helpers — no instantiation needed."""
 
     # ── Save ─────────────────────────────────────────────────────────────────
     @staticmethod
     def save(path: str | pathlib.Path, config: dict[str, Any]) -> bool:
-        """
-        Write *config* to *path* as formatted JSON.
-        Injects ``_version`` and ``_saved_at`` automatically.
-        Returns True on success, False on any I/O or serialisation error.
-        """
         try:
             payload: dict[str, Any] = {
                 "_version":  CONFIG_VERSION,
@@ -58,11 +42,6 @@ class ConfigIO:
     # ── Load ─────────────────────────────────────────────────────────────────
     @staticmethod
     def load(path: str | pathlib.Path) -> dict[str, Any] | None:
-        """
-        Read a JSON config from *path*.
-        Strips meta keys (``_version``, ``_saved_at``).
-        Returns ``None`` on error (file missing, bad JSON, etc.).
-        """
         try:
             raw = pathlib.Path(path).read_text(encoding="utf-8")
             data: dict[str, Any] = json.loads(raw)
@@ -77,10 +56,6 @@ class ConfigIO:
     # ── Validate ─────────────────────────────────────────────────────────────
     @staticmethod
     def validate(config: dict[str, Any]) -> list[str]:
-        """
-        Lightweight validation — returns a list of warning strings.
-        Empty list means the config looks fine.
-        """
         warnings: list[str] = []
         expected_sections = {"display", "behavior", "header", "mapping"}
         for section in expected_sections:
@@ -91,10 +66,6 @@ class ConfigIO:
     # ── Merge ────────────────────────────────────────────────────────────────
     @staticmethod
     def merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
-        """
-        Deep-merge *override* into *base*.
-        Useful for applying a partial saved config on top of built-in defaults.
-        """
         result = base.copy()
         for key, value in override.items():
             if (
@@ -110,10 +81,6 @@ class ConfigIO:
     # ── Default config skeleton ───────────────────────────────────────────────
     @staticmethod
     def defaults() -> dict[str, Any]:
-        """
-        Return a minimal valid config dict — handy for first-run initialisation
-        or unit tests that only care about one section.
-        """
         return {
             "display": {
                 "fullscreen":    True,
